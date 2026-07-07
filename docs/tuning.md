@@ -233,3 +233,26 @@ Every LLM instruction the game sends, one JSON file per domain
 Edit the wording freely; the referee's *word ladders* above decide what
 the answers are allowed to do. The Developer screen's AI log table shows
 every prompt byte-exactly as the model received it.
+
+## Generation budgets — `backend/ai/llm/prompt_budgets.py`
+
+Output length is POLICY, not per-template vibes (local-first pivot,
+[plans/text-diet.md](plans/text-diet.md)). Every template is mapped to a
+budget class; `test_prompt_budgets` fails when a template is unmapped or
+its `max_tokens` exceeds its class ceiling — so new prompts must declare
+a class, and a cap bump is a deliberate, reviewed change.
+
+| Class | Ceiling | Meant for |
+|---|---|---|
+| `word_answer` | 80 | one-word/enum JSON (`goal_check`, `next_turn`) |
+| `one_liner` | 120 | one sentence (`turn_vanity`, `generate_ability`) |
+| `short_narration` | 250 | 1–3 sentence scene text, small action JSON |
+| `structured` | 450 | multi-field JSON (monster stages, items, notices) |
+| `storytelling` | 550 | the prose allowlist (chronicle, evolution prose, `battle_talk`, `path_choices`) |
+
+Measure before turning: the **eval harness** reads the dev database's
+own logs — `python -m backend.tests.eval report` for the per-template
+scoreboard (parse-fail/truncation/latency), `... eval replay --name X`
+to re-run real logged prompts (run with the backend stopped; it loads
+the model in-process). Replay rows are tagged `eval:` and never mix
+with game statistics.

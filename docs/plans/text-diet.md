@@ -1,6 +1,7 @@
 # Text Diet + Eval Harness — Plan
 
-**Status:** IN PROGRESS (July 2026) — Diet-M0 underway.
+**Status:** IN PROGRESS (July 2026) — Diet-M0..M3 landed; M4 awaits
+Aaron's live soak (the delta report lands here when it's done).
 **Branch:** `feature/text-diet` — one milestone commit per milestone, prefix `Diet-M#`.
 **Parent:** [local-first-pivot.md](local-first-pivot.md) — this is child initiative 1.
 
@@ -133,12 +134,23 @@ dev DB), local 7B at ~15–30 tok/s. Regenerate any time with
 
 ## Verification checklist
 
-- [ ] `./venv/Scripts/python.exe -m pytest` green (incl. budget suite)
-- [ ] `ruff check backend setup tools` clean; file-size ceiling respected
-- [ ] `python -m backend.tests.eval report` returns the scoreboard from cloned logs
-- [ ] `python -m backend.tests.eval replay --name generate_ability --runs 2` (backend stopped) — fresh `eval:` rows visible in the dev AI log
+- [x] `./venv/Scripts/python.exe -m pytest` green — 17 suites incl. the budget suite
+- [x] `ruff check backend setup tools` clean; file-size ceiling respected
+- [x] `python -m backend.tests.eval report` returns the scoreboard (615 generations, 52 templates)
+- [x] replay verified live (backend stopped): `turn_vanity` at logged params, `goal_check` at the NEW 60-token cap (`--params current`) — 11-token answer, parsed, `eval:` rows in the dev AI log
 - [ ] Soak battle: dev AI log shows new caps on every row; abilities generate one-sentence descriptions
 
 ## Deviations log
 
-- *(none yet)*
+- **2026-07-07 — replay needed a read-snapshot rollback.** The queue
+  worker commits results on its own connection; under REPEATABLE READ
+  the replay session saw empty rows until `db.session.rollback()` ends
+  the snapshot before the fresh fetch (the Set-M4 soak-fix precedent).
+- **2026-07-07 — fewer wording edits than planned.** The dungeon file's
+  prose demands were already tight ("1-2 sentences" throughout) — its
+  diet is caps-only. Wording came down in ability, battle, exploration,
+  encounter, and player files.
+- **2026-07-07 — player_persona got a demand diet, not just a cap.**
+  Baseline average (460 tokens) sat ABOVE its new 450 cap, so field
+  demands shrank (3 traits, ONE goal, ONE fear, 2-item lists) — parser
+  fields unchanged.
