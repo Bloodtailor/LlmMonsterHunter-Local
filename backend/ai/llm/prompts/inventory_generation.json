@@ -53,7 +53,7 @@
 
   "treasure_discovery": {
     "description": "Streamed narration of the party discovering a treasure item (the item is already generated - reference it)",
-    "max_tokens": 300,
+    "max_tokens": 250,
     "temperature": 0.8,
     "parser": {
       "type": "text",

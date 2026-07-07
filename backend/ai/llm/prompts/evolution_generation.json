@@ -38,7 +38,7 @@
 
   "evolution_prose": {
     "description": "The evolved monster's new description, a fresh backstory chapter, and the appearance block that drives its new card art",
-    "max_tokens": 600,
+    "max_tokens": 550,
     "temperature": 0.85,
     "parser": {
       "type": "json",

@@ -1,7 +1,7 @@
 {
   "entry_atmosphere": {
     "description": "Generate atmospheric text for entering a dungeon with your party",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "text",
@@ -12,7 +12,7 @@
 
   "random_location": {
     "description": "Generate a random dungeon location with name and description",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.9,
     "parser": {
       "type": "json",
@@ -38,7 +38,7 @@
 
   "location_event": {
     "description": "Generate event text for exploring a specific location",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "text",
@@ -49,7 +49,7 @@
 
   "exit_narrative": {
     "description": "Generate satisfying exit text for completing a dungeon adventure",
-    "max_tokens": 400,
+    "max_tokens": 200,
     "temperature": 0.8,
     "parser": {
       "type": "text",
@@ -60,7 +60,7 @@
 
   "path_choices": {
     "description": "Generate a batch of distinct paths leading onward from the current location - routes, not destinations",
-    "max_tokens": 800,
+    "max_tokens": 500,
     "temperature": 0.9,
     "parser": {
       "type": "json",
@@ -73,7 +73,7 @@
 
   "exit_path": {
     "description": "Generate one path that leads OUT of the dungeon from the current location",
-    "max_tokens": 400,
+    "max_tokens": 200,
     "temperature": 0.9,
     "parser": {
       "type": "json",
@@ -86,7 +86,7 @@
 
   "arrival_location": {
     "description": "Generate the location the party arrives at after taking a chosen path",
-    "max_tokens": 400,
+    "max_tokens": 200,
     "temperature": 0.9,
     "parser": {
       "type": "json",
@@ -99,7 +99,7 @@
 
   "opening_scene": {
     "description": "The game's streamed opening: the wish-granting-power premise, told as the adventurer first approaches the dungeon",
-    "max_tokens": 500,
+    "max_tokens": 250,
     "temperature": 0.85,
     "parser": {
       "type": "text",
@@ -110,7 +110,7 @@
 
   "run_goal": {
     "description": "Write the run's ONE goal - concrete, checkable, achievable through exploration and encounters",
-    "max_tokens": 300,
+    "max_tokens": 120,
     "temperature": 0.9,
     "parser": {
       "type": "json",
@@ -123,7 +123,7 @@
 
   "goal_check": {
     "description": "THE GOAL REFEREE: did what just happened touch the run's goal? One word: no / progress / complete",
-    "max_tokens": 250,
+    "max_tokens": 60,
     "temperature": 0.6,
     "parser": {
       "type": "json",
@@ -136,7 +136,7 @@
 
   "expedition_notices": {
     "description": "The expedition board at the dungeon entrance - the LLM writes each notice's title, pitch, and theme; Python rolls its danger",
-    "max_tokens": 700,
+    "max_tokens": 450,
     "temperature": 0.9,
     "parser": {
       "type": "json",

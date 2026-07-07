@@ -1,7 +1,7 @@
 {
   "home_chat_reply": {
     "description": "A monster's streamed reply in the home-base chat: in its own voice, drawing on its memories and the last dungeon run",
-    "max_tokens": 280,
+    "max_tokens": 250,
     "temperature": 0.85,
     "parser": {
       "type": "text",

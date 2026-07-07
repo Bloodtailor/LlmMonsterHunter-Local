@@ -14,7 +14,7 @@
 
   "reunion_scene": {
     "description": "Streamed narration of the party recognizing a monster they have met before",
-    "max_tokens": 400,
+    "max_tokens": 250,
     "temperature": 0.9,
     "parser": {
       "type": "text",
@@ -25,7 +25,7 @@
 
   "camp_spotlight": {
     "description": "Pick the 1-2 party monsters whose story mattered most this run - they grow at this camp",
-    "max_tokens": 150,
+    "max_tokens": 120,
     "temperature": 0.6,
     "parser": {
       "type": "json",
@@ -38,7 +38,7 @@
 
   "growth_reflection": {
     "description": "One monster reflects on the run: a clamped stat step, maybe a justified new ability, maybe a reworded ability description",
-    "max_tokens": 400,
+    "max_tokens": 350,
     "temperature": 0.8,
     "parser": {
       "type": "json",
@@ -51,7 +51,7 @@
 
   "defeat_reflection": {
     "description": "One collective lesson the defeated party carries out of the dungeon",
-    "max_tokens": 300,
+    "max_tokens": 220,
     "temperature": 0.7,
     "parser": {
       "type": "json",
@@ -64,7 +64,7 @@
 
   "camp_restore": {
     "description": "Decide how much rest at camp restores each party monster's stamina and mana",
-    "max_tokens": 250,
+    "max_tokens": 120,
     "temperature": 0.6,
     "parser": {
       "type": "json",
