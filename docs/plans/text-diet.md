@@ -90,9 +90,46 @@ Representative diet targets (final numbers set from the M2 baseline):
   rates no worse); tuning.md "Generation budgets" section; CLAUDE.md
   eval command line; both plan docs closed out.
 
-## Baseline (filled in at M2)
+## Baseline (M2, July 7 2026)
 
-*(pending)*
+Corpus: 615 game generations across **52 of 64 templates** (the cloned
+dev DB), local 7B at ~15–30 tok/s. Regenerate any time with
+`python -m backend.tests.eval report`.
+
+| Category | Templates seen | Runs | Avg tokens | Avg sec/run |
+|---|---|---|---|---|
+| ability | 1 | 50 | 133 | 8.1 |
+| battle | 11 | 215 | 130 | 7.0 |
+| dungeon | 10 | 142 | 125 | 5.6 |
+| monster | 5 | 115 | 254 | 11.7 |
+| encounter | 3 | 28 | 125 | 8.0 |
+| player | 4 | 23 | 233 | 12.8 |
+| exploration | 4 | 14 | 276 | 15.2 |
+| evolution | 5 | 10 | 195 | 10.2 |
+| memory / inventory / chat / summary | 9 | 18 | ~130 | ~6.5 |
+
+**What the numbers say:**
+
+- **`generate_ability` (50 runs): 24% retry rate**, 2% parse-fail, 6%
+  truncation — the highest-volume reliability problem in the corpus,
+  and the diet's headline target.
+- **`player_persona`: 33% retry, 33% parse-fail, 33% truncation, 33
+  sec/run** — the big-schema worst case (3 runs, one-time cost, but
+  exactly the failure mode the pivot predicts).
+- **`camp_scene`: avg 672 tokens, 29 sec, 33% at cap** — the latency
+  worst case; budget 800→250 with 2–3-sentence wording.
+- **`next_turn` is the most-called template (66 runs)** at ~17 tokens
+  each — pure scheduling the math-battle initiative deletes outright.
+- **`battle_intro`: 20% truncation at cap 500**, avg 272 — wording must
+  come down with the cap (2–3 sentences total).
+- `enemy_turn` 12.5% and `growth_reflection` 16.7% retry rates — small
+  JSON adherence wobbles, expected to improve with shorter demands.
+- 12 templates have no log rows yet (door_choices, location_event,
+  treasure_item, treasure_discovery, chat_memory_extraction,
+  dungeon_ability_use, dungeon_item_use, ally_autonomous_turn,
+  camp_spotlight, returning_transform, reunion_scene,
+  generate_initial_abilities) — replay cannot manufacture prompts for
+  templates never sent; the M4 soak fills what gameplay reaches.
 
 ## Verification checklist
 
