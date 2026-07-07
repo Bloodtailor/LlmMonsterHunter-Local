@@ -17,6 +17,8 @@ At its heart, this is the archetypal fantasy adventure of capturing, training, a
 
 Where traditional games spend compute on rendering high-fidelity graphics, this project spends compute on LLMs and image models. Where most games ship with gigabytes of pre-made assets, here you download a model, and the monsters, visuals, personalities, and even battle outcomes are created as you play.
 
+**As of July 2026, this repo is going local-first.** The project is splitting in two: this repository is being redesigned around what small, consumer-GPU models do well (with cloud APIs as an optional boost), while a sister API-first project will carry the maximalist design. The survey and roadmap live in [docs/plans/local-first-pivot.md](docs/plans/local-first-pivot.md).
+
 This is a **personal project**, built solo for **educational purposes** and as part of my **portfolio**. If you've somehow found this repo — welcome! There's an **interactive setup** to guide you through installation. That said, because of the number of dependencies (Python, Node, MySQL, CUDA, ComfyUI, etc.), even with the setup script it may take a few hours to get running.
 
 ---
@@ -46,8 +48,11 @@ All core mechanics are implemented and playable. Each initiative below has a ful
 | [Memories & growth](docs/plans/monster-memory-evolution.md) | Cross-run memories, returning monsters, growth reflections, stamina/mana ladders |
 | [Campfire Chat](docs/plans/monster-chat.md) | Home-base conversations, memory extraction, rolling summaries for all logs |
 | [Evolution Altar](docs/plans/monster-evolution.md) | Transformative evolution with lineage, art regen, evolved personas |
+| [Game Loop v1](docs/plans/game-loop-v1.md) | Title screen, guided first run, expedition notices + danger, run goals + stakes, affinity + wary autonomy, post-run chronicle |
+| [New Game & player character](docs/plans/new-game-experience.md) | New Game world wipe, character-creation wizard with portrait, player always in the party, chat-as-player |
+| [Settings + DeepSeek](docs/plans/game-settings.md) | In-game settings panel, DeepSeek cloud provider with live model discovery and exact token usage |
 
-**What's next:** turning the mechanics into a *game* — title screen, guided first run, run goals and stakes, difficulty, and an affinity system. See [docs/plans/](docs/plans/) for the Game Loop v1 proposal.
+**What's next: the local-first pivot.** The game is being redesigned to run *great* on small local models: math-resolved battles (the LLM sets stats, tiers, and flavor at generation time; code computes every outcome), a strict text-length diet, and monsters that start with the basics and deepen through play. Survey, open questions, and roadmap: [docs/plans/local-first-pivot.md](docs/plans/local-first-pivot.md).
 
 ![Monster Sanctuary](docs/assets/images/monster_sanctuary.png)
 
