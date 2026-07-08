@@ -154,3 +154,8 @@ dev DB), local 7B at ~15–30 tok/s. Regenerate any time with
   Baseline average (460 tokens) sat ABOVE its new 450 cap, so field
   demands shrank (3 traits, ONE goal, ONE fear, 2-item lists) — parser
   fields unchanged.
+- **2026-07-08 — the M4 soak changes hands.** Aaron delegated the soak:
+  Claude drives a real play run (dungeon, battle, camp, chat) through
+  the HTTP API against the live backend + local model, then runs the
+  `report --since` delta. Same evidence, different pilot; Aaron may
+  still play a run later for feel and it folds into the report.

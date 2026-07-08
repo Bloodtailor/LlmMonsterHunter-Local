@@ -208,32 +208,39 @@ per-template scoreboard, decides what else must shrink, and later gates
 ## Open questions
 
 The four direction forks (combat input, numbers source, narration, birth
-scope) were answered day one — see Locked decisions. Still open (answers
-land here as they're decided):
+scope) were answered day one — see Locked decisions. The rest were
+settled 2026-07-08 (Aaron pre-approved Claude's recommendations — see
+Deviations):
 
-1. **Reference floor** — what model/hardware is THE design target?
-   (README says kunoichi-7b @ 4096 context. Design decisions differ for a
-   13B/24B floor.)
-2. **Numbers visible to the player?** Word-ladder veneer over numeric HP,
-   raw numbers in the UI, or both (toggle)?
-3. **Stamina/mana** — numeric pools under word displays (recommended), or
-   keep pure 5-word ladders?
-4. **goal_check / run goals** — keep (it's a cheap 1-word judgment), or
-   move goal progress to code-visible events only?
-5. **Chronicle & memory extraction** — keep both but shorter, or park
-   either for v1 of the pivot?
-6. **Item/ability use in dungeon** (600-token adjudications) — shrink
-   now and enum-ify effects later, or enum-ify in the same pass?
+1. **Reference floor — ANSWERED 2026-07-08: 7B @ 4096 stays THE design
+   target** (kunoichi-7b per README). Most conservative floor; matches
+   the Diet-M2 baseline corpus. Revisit only with a logged deviation.
+2. **Numbers visible to the player? — ANSWERED 2026-07-08: both.**
+   Word-ladder veneer by default; a settings toggle (the PR #168
+   settings panel is its home) reveals raw HP/pool numbers. Lands with
+   initiative 3.
+3. **Stamina/mana — ANSWERED 2026-07-08: numeric pools under word
+   displays.** The 5-word ladders become derived views of the numbers.
+4. **goal_check / run goals — ANSWERED 2026-07-08: keep.** It's a cheap
+   1-word judgment task (60-token cap post-diet) — exactly the class
+   local models handle.
+5. **Chronicle & memory extraction — ANSWERED 2026-07-08: keep both,
+   shorter.** Summaries are load-bearing context tools; slimming lands
+   with initiative 4.
+6. **Item/ability use in dungeon — ANSWERED 2026-07-08: shrink now,
+   enum-ify later.** Caps came down in Diet-M3; effect keywords join the
+   ability schema v2 work in initiative 2.
 7. **API repo logistics — ANSWERED 2026-07-07:** the ORIGINAL repo
    (`LlmMonsterHunter`) is the API-first one and runs the
    cloud-generation initiative there; the pivot lives in this fork
    (`LlmMonsterHunter-Local`, forked at PR #167). See Deviations.
-8. **Per-task provider routing** — v1 keeps the global local/DeepSeek
-   switch (recommended); later, allow "API for these N heavy tasks when
-   configured"?
+8. **Per-task provider routing — ANSWERED 2026-07-08: v1 keeps the
+   global local/DeepSeek switch.** Per-task API boosting is initiative
+   5's question, not before.
 9. **CLAUDE.md rule 3 amendment** — adopt the reworded philosophy above
    once the battle initiative lands (architecture.md referee section
-   rewrites in the same commit).
+   rewrites in the same commit). Still open only because it's scheduled,
+   not undecided.
 
 ## Roadmap — child initiatives (each gets its own plan doc)
 
@@ -285,6 +292,16 @@ have numbers (#2); #4–5 polish once the core loop is proven fast.
 - **2026-07-07 — stale claim removed.** The gateway Exception-kwargs bug
   predates the fork and was already fixed (Architecture Exemplar); it is
   not part of initiative 1.
+- **2026-07-08 — process delegated; remaining forks locked.** Aaron
+  handed day-to-day project authority to Claude and pre-approved the
+  roadmap: plan docs for initiatives 2–5 are written and locked using
+  Claude's recommendations without a per-doc approval stop (Aaron
+  reviews commits/docs at will and can override any time). In the same
+  decision, open questions 1–6 and 8 were answered (see above), and the
+  Diet-M4 soak changed hands: Claude scripts a real play run through the
+  HTTP API instead of waiting on Aaron's session (logged in
+  text-diet.md). The CLAUDE.md process line ("user approval") stands for
+  any NEW initiative outside this roadmap.
 - **2026-07-08 — old-direction docs scrubbed (identity only).** Deleted
   the maximalist-direction docs that no longer describe this fork's
   identity: `docs/plans/monster-depth-cmdts.md` and the Feb-2025
