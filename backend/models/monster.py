@@ -44,7 +44,7 @@ class Monster(BaseModel):
     # Staged generation progress: blueprint -> persona -> complete
     generation_stage = Column(String(20), nullable=True, default='complete')
 
-    # CMDTS + persona (per-monster JSON - shapes in docs/plans/monster-depth-cmdts.md §2)
+    # CMDTS + persona (per-monster JSON; cmdts_data.py is the source of truth for shapes)
     taxonomy = Column(
         JSON, nullable=True
     )  # curated domain/kingdom + invented lineage + display labels

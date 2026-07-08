@@ -44,7 +44,7 @@ All core mechanics are implemented and playable. Each initiative below has a ful
 | Initiative | What shipped |
 |---|---|
 | Core loop | Monster generation, dungeon paths, riddle encounters, LLM-refereed battles, battlefield recruitment |
-| [Monster depth + inventory](docs/plans/monster-depth-cmdts.md) | Persona/taxonomy depth (CMDTS), items, CoCaToks, pickup ceremonies |
+| Monster depth + inventory | Persona/taxonomy depth (CMDTS), items, CoCaToks, pickup ceremonies |
 | [Memories & growth](docs/plans/monster-memory-evolution.md) | Cross-run memories, returning monsters, growth reflections, stamina/mana ladders |
 | [Campfire Chat](docs/plans/monster-chat.md) | Home-base conversations, memory extraction, rolling summaries for all logs |
 | [Evolution Altar](docs/plans/monster-evolution.md) | Transformative evolution with lineage, art regen, evolved personas |

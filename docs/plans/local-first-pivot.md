@@ -255,9 +255,15 @@ have numbers (#2); #4–5 polish once the core loop is proven fast.
 - **CLAUDE.md rule 3** — amended when #3 lands (wording above, Q13).
 - **docs/architecture.md** "referee philosophy" section — rewritten when
   #3 lands; word ladders re-documented as presentation layer.
-- **docs/plans/monster-depth-cmdts.md** — the deep-persona direction
-  lives on in the API-first repo; here it's superseded by the birth diet
-  + progressive depth (#2, #4).
+- **docs/plans/monster-depth-cmdts.md — REMOVED 2026-07-08** (see
+  Deviations). The deep-persona/CMDTS direction lives on in the API-first
+  repo; here it's superseded by the birth diet + progressive depth
+  (#2, #4). The CMDTS code still ships until #2 lands —
+  `backend/game/monster/cmdts_data.py` is now its own source of truth for
+  the taxonomy shapes the deleted doc used to hold.
+- **docs/design/ (Feb-2025 historical design phase) — REMOVED 2026-07-08.**
+  `gameplay_design.md` / `story_design.md` were the original maximalist
+  vision, superseded by the shipped plan docs and this pivot.
 - **Architecture-review backlog** (July 2026): the battle god-function
   and referee complexity findings are absorbed by #3. (An earlier draft
   said a `gateway.py` Exception-kwargs bug fix rides #1 — stale: that
@@ -279,3 +285,15 @@ have numbers (#2); #4–5 polish once the core loop is proven fast.
 - **2026-07-07 — stale claim removed.** The gateway Exception-kwargs bug
   predates the fork and was already fixed (Architecture Exemplar); it is
   not part of initiative 1.
+- **2026-07-08 — old-direction docs scrubbed (identity only).** Deleted
+  the maximalist-direction docs that no longer describe this fork's
+  identity: `docs/plans/monster-depth-cmdts.md` and the Feb-2025
+  `docs/design/` set (`gameplay_design.md`, `story_design.md`). Dangling
+  references fixed in the same pass — README dev-status row unlinked,
+  `CLAUDE.md` + `architecture.md` directory pointers dropped `docs/design/`,
+  and three code comments (`cmdts_data.py`, `models/monster.py`,
+  `transformers/monsters.js`) stopped citing the deleted plan doc. Scope
+  was deliberately narrow: accurate descriptions of features that still
+  ship today (word-ladder battles, free-text combat, CMDTS deep births)
+  were left intact — they get rewritten when their initiative lands
+  (#2/#3), per "truthful until initiatives land" above.

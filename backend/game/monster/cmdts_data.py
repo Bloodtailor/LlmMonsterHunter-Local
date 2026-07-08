@@ -2,7 +2,6 @@
 # The single source of truth for the Comprehensive Multi-Dimensional Taxonomy System.
 # Upper taxonomy ranks are CURATED (the LLM selects from these); lower ranks
 # (family/genus/species) are LLM-invented per monster.
-# Design reference: docs/plans/monster-depth-cmdts.md §3
 
 import random
 

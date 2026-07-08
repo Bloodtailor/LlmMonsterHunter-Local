@@ -16,7 +16,7 @@ when he wants detail.
 - [docs/api/README.md](docs/api/README.md) — HTTP surface; async endpoints
   return `{ workflow_id }` and results arrive over SSE.
 - [docs/plans/](docs/plans/) — one plan doc per initiative, kept current
-  (status, deviations). `docs/design/` is the historical design phase.
+  (status, deviations).
 
 ## Commands
 
