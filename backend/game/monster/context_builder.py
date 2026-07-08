@@ -14,6 +14,36 @@
 from backend.game.utils import resolve_detail_tier
 
 
+def ability_line(ability) -> str:
+    """One ability as prompt text - THE canonical renderer. Schema-v2
+    abilities show their structured tier words (the referee calibrates
+    from words, not prose); legacy prose-only rows render as before."""
+
+    # getattr defaults keep this renderer friendly to duck-typed test
+    # doubles and any legacy row shape
+    element = getattr(ability, 'element', None)
+    power = getattr(ability, 'power', None)
+    cost = getattr(ability, 'cost', None)
+    cost_pool = getattr(ability, 'cost_pool', None)
+    target = getattr(ability, 'target', None)
+    effect = getattr(ability, 'effect', None)
+
+    tags = [
+        bit
+        for bit in (
+            getattr(ability, 'ability_type', None),
+            element,
+            f"power: {power}" if power else None,
+            f"cost: {cost} {cost_pool or ''}".strip() if cost else None,
+            f"target: {target}" if target else None,
+            f"effect: {effect}" if effect else None,
+        )
+        if bit
+    ]
+    tag_text = f" ({', '.join(tags)})" if tags else ""
+    return f"{ability.name}{tag_text}: {ability.description}"
+
+
 def build_monster_block(
     monster,
     tier: str = None,
@@ -46,9 +76,7 @@ def build_monster_block(
         )
 
     personality = ', '.join(monster.personality_traits or [])
-    abilities = (
-        "; ".join(f"{a.name} ({a.description})" for a in (monster.abilities or [])) or "none"
-    )
+    abilities = "; ".join(ability_line(a) for a in (monster.abilities or [])) or "none"
 
     # ----- compact: identity, stats, prose, traits, wish, abilities -----
     identity_bits = [

@@ -167,11 +167,13 @@ def run_use_dungeon_ability(context: dict, step: WorkflowStep) -> dict[str, Any]
 
     # Step 2 - the dungeon referee judges what actually happens
     step.emit("resolve_ability")
+    from backend.game.monster.context_builder import ability_line
+
     result = resolve_dungeon_ability(
         location,
         build_monsters_details([actor]),
         ability.name,
-        ability.description,
+        ability_line(ability),
         target_description,
         secret_knowledge,
         workflow_name,

@@ -30,8 +30,10 @@ def resolve_combat_turn(
             f"{actor_name} takes a defensive stance, bracing against incoming attacks."
         )
     elif action == 'ability' and ability:
+        from backend.game.monster.context_builder import ability_line
+
         action_description = (
-            f"{actor_name} uses the ability '{ability.name}': {ability.description} "
+            f"{actor_name} uses the ability {ability_line(ability)} "
             f"Target: {ctx.entry_name(target_side, target_id)}"
         )
     elif action == 'item' and item:

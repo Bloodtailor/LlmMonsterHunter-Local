@@ -128,19 +128,19 @@ def main():
     )
 
     # ===== Ability-type pool defaults =====
+    # Since schema v2 the template's type list arrives via the
+    # {type_options} variable built from ABILITY_TYPES - so the drift
+    # guard checks the two constants against each other instead of
+    # scanning the template JSON.
     print('\n-- ability pool defaults --')
-    import json
-    import pathlib
+    from backend.game.battle.constants import ABILITY_TYPES
 
-    ability_json = json.loads(
-        pathlib.Path('backend/ai/llm/prompts/ability_generation.json').read_text(encoding='utf-8')
-    )
-    template_text = json.dumps(ability_json)
-    missing = [t for t in ABILITY_POOL_BY_TYPE if t not in template_text]
+    missing = [t for t in ABILITY_POOL_BY_TYPE if t not in ABILITY_TYPES]
+    extra = [t for t in ABILITY_TYPES if t not in ABILITY_POOL_BY_TYPE]
     check(
-        'every mapped ability type appears in ability_generation.json',
-        not missing,
-        f'unmapped-in-template: {missing}',
+        'ABILITY_TYPES and ABILITY_POOL_BY_TYPE agree',
+        not missing and not extra,
+        f'pool-only: {missing}, types-only: {extra}',
     )
     check(
         'all mapped pools are real pools',

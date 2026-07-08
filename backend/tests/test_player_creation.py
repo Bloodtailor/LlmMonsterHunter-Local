@@ -77,8 +77,14 @@ STUB_ANSWERS = {
     },
     'generate_ability': {
         'name': 'Proving Rise',
-        'description': 'A test ability from the stub.',
+        'flavor': 'Dough and courage rise together.',
         'type': 'support',
+        'element': 'Nature',  # normalize_choice must lowercase this
+        'power': 'modest',
+        'cost_pool': 'mana',
+        'cost': 'minor',
+        'target': 'ally',
+        'effect': 'rally',
     },
 }
 

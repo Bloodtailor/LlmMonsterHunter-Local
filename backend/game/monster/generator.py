@@ -7,14 +7,9 @@
 
 import random
 
-from backend.core.events import (
-    emit_monster_ability_added,
-    emit_monster_created,
-    emit_monster_updated,
-)
+from backend.core.events import emit_monster_created, emit_monster_updated
 from backend.game.monster import cmdts_data
 from backend.game.utils import build_and_generate
-from backend.models.ability import Ability
 from backend.models.monster import Monster
 
 WILDS_LOCATION_CONTEXT = "The untamed wilds of the realm, far from any charted place"
@@ -181,74 +176,11 @@ def generate_monster_story(
 
 # ===== ABILITIES AND CARD ART (signatures unchanged) =====
 
-
 # Card art (generation + prompt composition) lives in card_art.py -
-# art is a bonus, never a blocker
-
-
-def generate_ability(monster: Monster, growth_context: str = ''):
-
-    variables = _build_ability_variables(monster, growth_context)
-    parsed_data = build_and_generate('generate_ability', 'ability_generation', variables)
-
-    ability = Ability.create_from_llm_data(monster.id, parsed_data)
-    ability.save()
-
-    # The monster has a new ability
-    emit_monster_ability_added(monster.id, ability.to_dict())
-
-    return ability
-
-
-def generate_ability_by_id(monster_id):
-    monster = Monster.query.get(monster_id)
-    return generate_ability(monster)
-
-
-def _build_ability_variables(monster: Monster, growth_context: str = ''):
-
-    # Format existing abilities
-    existing_abilities = monster.abilities
-    abilities_text = (
-        "\n".join(
-            [
-                f"- {ability.name} ({ability.ability_type}): {ability.description}"
-                for ability in existing_abilities
-            ]
-        )
-        if existing_abilities
-        else "None (this will be their first ability)"
-    )
-
-    persona = monster.persona or {}
-    ecology = monster.ecology or {}
-
-    # Growth/return abilities carry the WHY into the prompt; ordinary
-    # generation leaves this block empty
-    growth_block = (
-        f"\n--- Why this ability is being learned NOW ---\n{growth_context}\n"
-        if growth_context
-        else ''
-    )
-
-    return {
-        'growth_context': growth_block,
-        'monster_name': monster.name,
-        'monster_species': monster.species,
-        'monster_description': monster.description,
-        'monster_backstory': monster.backstory,
-        'monster_health': monster.max_health,
-        'monster_attack': monster.attack,
-        'monster_defense': monster.defense,
-        'monster_speed': monster.speed,
-        'monster_personality': ', '.join(monster.personality_traits or []),
-        'monster_role': monster.party_role or 'unknown',
-        'monster_class': _class_text(monster.class_taxonomy),
-        'monster_elements': ', '.join(ecology.get('elemental_affinities') or []) or 'none',
-        'monster_wish': persona.get('core_wish', 'unknown'),
-        'existing_abilities_text': abilities_text,
-        'ability_count': len(monster.abilities),
-    }
+# art is a bonus, never a blocker. Ability authoring (schema v2) lives
+# in ability_generator.py; re-exported here so every call site keeps
+# one import home. The import sits below the helpers it needs
+# (_clean_str, _class_text) to keep the cycle harmless.
 
 
 # ===== NORMALIZATION (snap LLM output onto curated data) =====
@@ -488,3 +420,12 @@ def _class_text(class_taxonomy) -> str:
         )
         parts.append(chain)
     return "; ".join(parts)
+
+
+# Re-exported ability entry points (see the abilities note above). Sits
+# at the bottom so ability_generator's lazy imports of _clean_str /
+# _class_text always find them defined.
+from backend.game.monster.ability_generator import (  # noqa: E402, F401
+    generate_ability,
+    generate_ability_by_id,
+)
