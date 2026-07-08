@@ -27,6 +27,8 @@ export function transformMonster(rawMonster) {
     partyRole: rawMonster.party_role || null,
     // How deeply it trusts the party (wary monsters act on their own in battle)
     affinity: rawMonster.affinity || 'wary',
+    // How it acts under pressure (null on pre-pivot monsters)
+    temperament: rawMonster.temperament || null,
     generationStage: rawMonster.generation_stage || 'complete',
     taxonomy: rawMonster.taxonomy || {},
     classTaxonomy: rawMonster.class_taxonomy || [],
@@ -90,6 +92,13 @@ export function transformAbility(rawAbility) {
     description: rawAbility.description,
     type: rawAbility.ability_type || rawAbility.type,
     monsterId: rawAbility.monster_id,
+    // Schema v2 tier words (null on legacy abilities)
+    element: rawAbility.element || null,
+    power: rawAbility.power || null,
+    costPool: rawAbility.cost_pool || null,
+    cost: rawAbility.cost || null,
+    target: rawAbility.target || null,
+    effect: rawAbility.effect || null,
     createdAt: rawAbility.created_at ? new Date(rawAbility.created_at) : null,
     updatedAt: rawAbility.updated_at ? new Date(rawAbility.updated_at) : null,
   };

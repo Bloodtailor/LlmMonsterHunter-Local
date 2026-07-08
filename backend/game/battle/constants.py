@@ -64,6 +64,47 @@ def full_resources() -> dict:
     return {key: BRIMMING for key in RESOURCE_KEYS}
 
 
+# ===== ABILITY SCHEMA V2 (numbers at birth - numeric-core initiative) =====
+# Abilities are authored with tier WORDS the LLM picks at generation time;
+# these maps turn the words into numbers. Rebalancing = editing this file,
+# never regenerating content. The math battle engine (initiative 3) consumes
+# the multipliers; until then the words ride along as referee context.
+
+# How strong an ability's effect is, weakest to strongest.
+# Values are effect multipliers for the coming damage/heal formulas.
+POWER_TIERS = {
+    'feeble': 0.6,
+    'modest': 0.85,
+    'potent': 1.0,
+    'mighty': 1.25,
+    'legendary': 1.6,
+}
+
+# What an ability costs its pool per use. Deliberately the SAME words the
+# referee already speaks (RESOURCE_DELTAS) so one ladder serves both.
+ABILITY_COST_TIERS = ['none', 'minor', 'moderate', 'heavy']
+
+# Who an ability can be aimed at.
+ABILITY_TARGETS = ['self', 'ally', 'enemy', 'all_enemies', 'all_allies']
+
+# The ONE mechanical thing an ability does. Code implements each keyword
+# (initiative 3); the gloss doubles as prompt text for the generation call.
+ABILITY_EFFECTS = {
+    'damage': 'harms the target',
+    'guard': 'shields the target from harm',
+    'heal': 'mends the target\'s condition',
+    'restore': 'refills the target\'s stamina or mana',
+    'haste': 'speeds the target up',
+    'slow': 'slows the target down',
+    'drain': 'saps the target\'s reserves',
+    'rally': 'bolsters the target\'s next actions',
+}
+
+# The existing ability types (keys of ABILITY_POOL_BY_TYPE, kept explicit
+# for prompt option lists and normalization)
+ABILITY_TYPES = ['attack', 'defense', 'support', 'special', 'movement', 'utility']
+
+
 # How many enemies a battle spawns (inclusive range)
 # Design allows up to 7 - kept small while each enemy costs ~4 LLM calls + art
 ENEMY_COUNT_RANGE = (1, 2)

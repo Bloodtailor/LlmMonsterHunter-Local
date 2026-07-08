@@ -68,12 +68,30 @@ Token-aware budgets that scale with the ACTIVE provider's context window
 | `IMPACT_STEPS` | light `1`, heavy `2`, devastating `3`, heal_light `-1`, heal_major `-2` | How far each referee impact word moves a monster on the ladder |
 | `RESOURCE_LADDER` | brimming → steady → strained → drained → spent | Stamina/mana reserves (refill on dungeon entry, camp rest, restores) |
 | `RESOURCE_DELTAS` | minor `1`, moderate `2`, heavy `3`, restore_minor `-1`, restore_major `-2` | Referee cost words → ladder steps |
-| `ABILITY_POOL_BY_TYPE` | attack/defense/movement → stamina; support/special/utility → mana | Default pool an ability drains when the referee stays silent |
+| `ABILITY_POOL_BY_TYPE` | attack/defense/movement → stamina; support/special/utility → mana | Default pool an ability drains when the referee stays silent (also the v2 `cost_pool` default) |
+| `POWER_TIERS` | feeble `0.6` → modest `0.85` → potent `1.0` → mighty `1.25` → legendary `1.6` | Ability schema v2: power word → effect multiplier (consumed by the math battle engine) |
+| `ABILITY_COST_TIERS` | none / minor / moderate / heavy | v2 per-use cost words (the same ladder `RESOURCE_DELTAS` steps) |
+| `ABILITY_EFFECTS` | damage, guard, heal, restore, haste, slow, drain, rally | The ONE mechanical keyword a v2 ability does; code implements each (initiative 3) |
+| `ABILITY_TARGETS` | self / ally / enemy / all_enemies / all_allies | Who a v2 ability can aim at |
+| `TEMPERAMENTS` *(cmdts_data.py)* | aggressive, cunning, protective, craven, stoic, mischievous | Picked at spark; initiative 3's enemy-action policies key off it |
 | `ENEMY_COUNT_RANGE` | `(1, 2)` *(danger)* | Enemies per battle (design allows up to 7; each enemy costs ~4 LLM calls + art). Overridden by the expedition's danger profile |
 | `MAX_CONSECUTIVE_ENEMY_TURNS` | `6` | Softlock valve — forces an ally turn after this many enemy turns |
 | `OVERDUE_WAIT_MULTIPLIER` | `2` | Fairness valve — a monster waiting 2× the combatant count is force-picked |
 | `PLAYER_TEXT_MAX_CHARS` | `500` | Cap on free-text actions and talk |
 | `RECENT_LOG_SIZE` / `TURN_HISTORY_SIZE` | `400` / `40` | Storage safety valves (prompts are budget-clamped separately) |
+
+## Monster birth — `backend/game/monster/cmdts_data.py`
+
+Births are 2 LLM calls (spark + voice); every number is code-derived
+from the spark's words.
+
+| Knob | Default | Effect |
+|---|---|---|
+| `RARITY_WEIGHTS` | common `45`, uncommon `30`, rare `15`, epic `7`, legendary `3` | Code-rolled rarity (never LLM-picked) |
+| `ROLE_STAT_PROFILES` | e.g. tank `130/18/26/9`, striker `100/30/14/16` (health/attack/defense/speed) | Level-1 stat bases per party role |
+| `RARITY_MULTIPLIERS` | common `1.0` → legendary `1.45` | Rarity scaling on every stat |
+| `SIZE_STAT_NUDGES` | tiny `0.85`hp/`1.2`spd → colossal `1.3`hp/`0.75`spd | Size scaling per stat |
+| `STAT_JITTER` | `0.10` | ± proportional randomness per stat |
 
 ## Dungeon events — `backend/game/dungeon/events.py`
 
@@ -245,9 +263,9 @@ a class, and a cap bump is a deliberate, reviewed change.
 | Class | Ceiling | Meant for |
 |---|---|---|
 | `word_answer` | 80 | one-word/enum JSON (`goal_check`, `next_turn`) |
-| `one_liner` | 120 | one sentence (`turn_vanity`, `generate_ability`) |
+| `one_liner` | 120 | one sentence (`turn_vanity`, `camp_spotlight`) |
 | `short_narration` | 250 | 1–3 sentence scene text, small action JSON |
-| `structured` | 450 | multi-field JSON (monster stages, items, notices) |
+| `structured` | 450 | multi-field JSON (`monster_spark`/`monster_voice`, `generate_ability` v2, items, notices) |
 | `storytelling` | 550 | the prose allowlist (chronicle, evolution prose, `battle_talk`, `path_choices`) |
 
 Measure before turning: the **eval harness** reads the dev database's

@@ -1,66 +1,29 @@
 {
-  "monster_blueprint_identity": {
-    "description": "Stage A1: name, taxonomy lineage, role, size, lifecycle, creation - the factual skeleton everything else builds on",
+  "monster_spark": {
+    "description": "Birth call 1: identity words (role/size/temperament feed stats and battle policies) plus the look that feeds card art",
     "max_tokens": 300,
     "temperature": 0.9,
     "parser": {
       "type": "json",
       "parser_name": "basic_parser",
-      "expected_fields": ["name", "domain", "kingdom", "family", "genus", "species", "race_label", "party_role", "size_class", "lifecycle_stage", "creation_mechanism"],
-      "required_fields": ["name", "domain", "kingdom", "species"]
+      "expected_fields": ["name", "species", "race_label", "party_role", "size_class", "temperament", "sapience", "elements", "look", "colors"],
+      "required_fields": ["name", "species", "look"]
     },
-    "prompt_template": "You are a creature designer for a fantasy monster-catching game. You are designing the FACTS of a new monster - its lineage and nature. Later steps will give it a personality, so keep this step factual.\n\n========== CONTEXT ==========\n\n--- Where this monster dwells ---\n{location_context}\n\n--- This monster's rarity (already decided) ---\n{rarity} - design a creature whose concept fits this rarity. Common creatures are everyday wildlife of this world; legendary ones are once-in-a-generation beings.\n\n--- Curated taxonomy: pick ONE domain and ONE kingdom from this tree ---\n{taxonomy_options}\n\n========== YOUR TASK ==========\nInvent a creature that belongs where it dwells. Choose domain and kingdom FROM THE TREE ABOVE, then INVENT its lower lineage: family (a lineage name), genus (a breed name), species (its full species name). Also give:\n- name: the personal name its friends call it\n- race_label: a plain-language word for what it looks like (e.g. Beetle, Drake, Sprite)\n- party_role: one of {role_options}\n- size_class: one of {size_options}\n- lifecycle_stage: one of {lifecycle_options}\n- creation_mechanism: how it came to exist - one of {creation_options}\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"name\": \"...\", \"domain\": \"...\", \"kingdom\": \"...\", \"family\": \"...\", \"genus\": \"...\", \"species\": \"...\", \"race_label\": \"...\", \"party_role\": \"...\", \"size_class\": \"...\", \"lifecycle_stage\": \"...\", \"creation_mechanism\": \"...\"}}\n\nJSON:"
+    "prompt_template": "You are a creature designer for a fantasy monster-catching game, creating a new monster in ONE pass - its identity and its look.\n\n--- Where this monster dwells ---\n{location_context}\n\n--- Its rarity (already decided) ---\n{rarity} - design a creature whose concept fits this rarity. Common creatures are everyday wildlife; legendary ones are once-in-a-generation beings.\n\nInvent a creature that belongs where it dwells:\n- name: the personal name its friends call it\n- species: its invented species name\n- race_label: a plain word for what it looks like (e.g. Beetle, Drake, Sprite)\n- party_role: one of {role_options}\n- size_class: one of {size_options}\n- temperament: how it acts under pressure - one of {temperament_options}\n- sapience: one of {sapience_options} (feral cannot speak at all; bestial reads tone but not words)\n- elements: list of 0-2 from: {element_options}\n- look: 1-2 sentences of pure physical appearance written for an artist - body, texture, notable parts; only what the eye sees\n- colors: 2-3 color words\n\nRespond with ONLY valid JSON in exactly this format:\n{{\"name\": \"...\", \"species\": \"...\", \"race_label\": \"...\", \"party_role\": \"...\", \"size_class\": \"...\", \"temperament\": \"...\", \"sapience\": \"...\", \"elements\": [\"...\"], \"look\": \"...\", \"colors\": [\"...\"]}}\n\nJSON:",
+    "variables": ["location_context", "rarity", "role_options", "size_options", "temperament_options", "sapience_options", "element_options"]
   },
 
-  "monster_blueprint_ecology": {
-    "description": "Stage A2: habitat, diet, social life, sapience, elements, and trained class - how this creature lives",
-    "max_tokens": 350,
-    "temperature": 0.85,
-    "parser": {
-      "type": "json",
-      "parser_name": "basic_parser",
-      "expected_fields": ["habitat_primary", "habitat_secondary", "biomes", "social_structure", "social_notes", "sustenance", "feeding_style", "diet_notes", "sapience", "communication", "elements", "activity_cycle", "class_domain", "class_discipline", "class_specialization"],
-      "required_fields": ["habitat_primary", "sapience"]
-    },
-    "prompt_template": "You are a creature designer for a fantasy monster-catching game, detailing how an already-designed creature LIVES.\n\n========== CONTEXT ==========\n\n--- Where this monster dwells ---\n{location_context}\n\n--- The creature so far ---\n{identity_facts}\n\n========== YOUR TASK ==========\nDecide its way of life. Every choice must fit the creature above and where it dwells. Pick ONLY from the allowed values:\n- habitat_primary: one of {habitat_options}\n- habitat_secondary: list, others of those it also roams (may be empty)\n- biomes: list of 1-3 from: {biome_options}\n- social_structure: one of {social_options} (social_notes: one short phrase on its social life)\n- sustenance: list of 1-2 from: {sustenance_options}\n- feeding_style: one of {feeding_options} (diet_notes: one short phrase on what it actually eats)\n- sapience: one of {sapience_options} (feral cannot speak at all; bestial understands tone but not words)\n- communication: list from: {communication_options}\n- elements: list of 0-2 elemental affinities from: {element_options}\n- activity_cycle: one of {activity_options}\n- Trained class, if any: class_domain one of {class_domain_options_line} or \"none\" if untrained. If trained, INVENT class_discipline (its school of training) and class_specialization (its signature technique focus).\n\nClass domains explained:\n{class_domain_options}\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"habitat_primary\": \"...\", \"habitat_secondary\": [\"...\"], \"biomes\": [\"...\"], \"social_structure\": \"...\", \"social_notes\": \"...\", \"sustenance\": [\"...\"], \"feeding_style\": \"...\", \"diet_notes\": \"...\", \"sapience\": \"...\", \"communication\": [\"...\"], \"elements\": [\"...\"], \"activity_cycle\": \"...\", \"class_domain\": \"...\", \"class_discipline\": \"...\", \"class_specialization\": \"...\"}}\n\nJSON:"
-  },
-
-  "monster_inner_life": {
-    "description": "Stage B: the monster's inner life - wish, motivations, beliefs, fears, and the secret it guards",
-    "max_tokens": 350,
+  "monster_voice": {
+    "description": "Birth call 2: the voice - traits, speech style, a want, a battle line; everything talk and negotiation run on",
+    "max_tokens": 220,
     "temperature": 0.9,
     "parser": {
       "type": "json",
       "parser_name": "basic_parser",
-      "expected_fields": ["core_wish", "motivations", "goals", "beliefs", "moral_character", "fears", "secret"],
-      "required_fields": ["core_wish", "secret"]
+      "expected_fields": ["personality_traits", "speech_style", "want", "battle_line"],
+      "required_fields": ["speech_style", "want"]
     },
-    "prompt_template": "You are writing the INNER LIFE of a monster in a fantasy game where every monster has a wish it seeks to fulfill - the deep desire that drives its dialogue, battles, and growth.\n\n========== CONTEXT ==========\n\n--- The monster (established facts - stay true to ALL of them) ---\n{monster_facts}\n\n========== YOUR TASK ==========\nWrite its inner life, each field ONE short sentence (goals and fears are short lists):\n- core_wish: the ONE deep desire everything else bends around\n- motivations: the internal engine - why it does what it does\n- goals: 1-2 concrete ambitions it could actually achieve\n- beliefs: its worldview or code\n- moral_character: how it treats others, plainly stated\n- fears: 1-2 things that truly frighten it (deeper than mere dislikes)\n- secret: something it hides or will not admit - known only to itself, revealed only to those who earn deep trust. The best secrets create tension with its outward self.\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"core_wish\": \"...\", \"motivations\": \"...\", \"goals\": [\"...\"], \"beliefs\": \"...\", \"moral_character\": \"...\", \"fears\": [\"...\"], \"secret\": \"...\"}}\n\nJSON:"
-  },
-
-  "monster_social_self": {
-    "description": "Stage C: the monster's social self - traits, tastes, voice, and how to win it over",
-    "max_tokens": 450,
-    "temperature": 0.85,
-    "parser": {
-      "type": "json",
-      "parser_name": "basic_parser",
-      "expected_fields": ["personality_traits", "likes", "dislikes", "hobbies", "profession", "attitude_toward_strangers", "responds_well_to", "responds_poorly_to", "recruitment_lever", "drawn_to", "clashes_with", "speech_style", "battle_line"],
-      "required_fields": ["speech_style", "battle_line"]
-    },
-    "prompt_template": "You are writing the SOCIAL SELF of a monster in a fantasy game - how it acts around others, what it enjoys, and how it talks. Players will chat with this monster, so its voice matters most of all.\n\n========== CONTEXT ==========\n\n--- The monster (established facts - stay true to ALL of them) ---\n{monster_facts}\n\n--- Its inner life ---\n{inner_life_facts}\n\n========== YOUR TASK ==========\nWrite its social self. Keep entries short (2-4 words per list item, one sentence per prose field):\n- personality_traits: 3-5 adjectives\n- likes / dislikes: 2-3 each\n- hobbies: 1-3 things it does for its own enjoyment\n- profession: what it CONSIDERS its job or calling (its self-identity, which may differ from its trained class)\n- attitude_toward_strangers: its default stance when strangers approach\n- responds_well_to / responds_poorly_to: 2-3 each - approaches that soften or harden it (a persuasion rubric)\n- recruitment_lever: the one thing that could genuinely convince it to join a traveling party\n- drawn_to / clashes_with: the kinds of personalities it bonds with / grates against\n- speech_style: HOW it talks - rhythm, vocabulary, verbal tics, favorite metaphors. This must be distinctive enough to write dialogue from. (If it cannot speak, describe how it expresses itself instead.)\n- battle_line: its signature line (or display) when confronting intruders, true to that speech style\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"personality_traits\": [\"...\"], \"likes\": [\"...\"], \"dislikes\": [\"...\"], \"hobbies\": [\"...\"], \"profession\": \"...\", \"attitude_toward_strangers\": \"...\", \"responds_well_to\": [\"...\"], \"responds_poorly_to\": [\"...\"], \"recruitment_lever\": \"...\", \"drawn_to\": \"...\", \"clashes_with\": \"...\", \"speech_style\": \"...\", \"battle_line\": \"...\"}}\n\nJSON:"
-  },
-
-  "monster_creative_text": {
-    "description": "Stage D: the prose - description, backstory, and structured visual appearance",
-    "max_tokens": 450,
-    "temperature": 0.8,
-    "parser": {
-      "type": "json",
-      "parser_name": "basic_parser",
-      "expected_fields": ["description", "backstory", "visual_description", "primary_colors", "distinguishing_features"],
-      "required_fields": ["description", "backstory", "visual_description"]
-    },
-    "prompt_template": "You are the lore writer for a fantasy monster-catching game, writing the finished text for a fully designed monster. Everything below is CANON - your prose must agree with every fact.\n\n========== CONTEXT ==========\n\n--- Where this monster dwells ---\n{location_context}\n\n--- The monster (established facts) ---\n{monster_facts}\n\n--- Its persona ---\n{persona_facts}\n\n========== YOUR TASK ==========\nWrite:\n- description: 2-3 sentences introducing the creature - what it is and what it is known for\n- backstory: 3-5 sentences of its history, weaving in where it comes from, how it came to be, and the wish that drives it\n- visual_description: 2-3 sentences of pure physical appearance written for an artist - body, texture, notable parts. No personality, no history, only what the eye sees\n- primary_colors: 2-3 color words\n- distinguishing_features: 2-3 short visual features\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"description\": \"...\", \"backstory\": \"...\", \"visual_description\": \"...\", \"primary_colors\": [\"...\"], \"distinguishing_features\": [\"...\"]}}\n\nJSON:"
+    "prompt_template": "You are giving a newly met monster its VOICE in a fantasy game. Players will talk with this monster - its voice is what makes it real.\n\n--- The monster ---\n{spark_facts}\n\nWrite its voice (short entries, one sentence per prose field):\n- personality_traits: 2-3 adjectives\n- speech_style: HOW it talks - rhythm, vocabulary, verbal tics. Distinctive enough to write dialogue from. (If it cannot speak, how it expresses itself instead.)\n- want: the ONE thing it wants most - the lever every negotiation and friendship turns on\n- battle_line: its signature line (or display) when confronting intruders, true to that speech style\n\nRespond with ONLY valid JSON in exactly this format:\n{{\"personality_traits\": [\"...\"], \"speech_style\": \"...\", \"want\": \"...\", \"battle_line\": \"...\"}}\n\nJSON:",
+    "variables": ["spark_facts"]
   }
 }

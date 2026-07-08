@@ -21,42 +21,37 @@ def generate_detailed_monster(
         from backend.game.monster.card_art import generate_card_art
         from backend.game.monster.generator import (
             generate_ability,
-            generate_monster_blueprint,
-            generate_monster_persona,
-            generate_monster_story,
+            generate_monster_spark,
+            generate_monster_voice,
         )
 
-        # Step 1 - lineage, ecology, and stats (monster saved + announced here)
+        # Step 1 - identity words, look, and stats (monster saved +
+        # announced here). Step name kept from the staged era - the
+        # frontend contract survives the 2-call birth.
         step = "creating_blueprint"
         on_update(step, progress_data)
-        monster = generate_monster_blueprint()
+        monster = generate_monster_spark()
         progress_data.update({"monster": monster.to_dict()})
 
-        # Step 2 - inner life and social self
+        # Step 2 - the voice (traits, speech style, want, battle line)
         step = "shaping_persona"
         on_update(step, progress_data)
-        monster = generate_monster_persona(monster)
+        monster = generate_monster_voice(monster)
         progress_data.update({"monster": monster.to_dict()})
 
-        # Step 3 - description, backstory, appearance
-        step = "writing_story"
-        on_update(step, progress_data)
-        monster = generate_monster_story(monster)
-        progress_data.update({"monster": monster.to_dict()})
-
-        # Step 4
+        # Step 3
         step = "adding_first_ability"
         on_update(step, progress_data)
         ability_1 = generate_ability(monster)
         progress_data.update({"ability_1": ability_1.to_dict()})
 
-        # Step 5
+        # Step 4
         step = "adding_second_ability"
         on_update(step, progress_data)
         ability_2 = generate_ability(monster)
         progress_data.update({"ability_2": ability_2.to_dict()})
 
-        # Step 6
+        # Step 5
         step = "creating_card_art"
         on_update(step, progress_data)
         image_path = generate_card_art(monster)

@@ -408,12 +408,12 @@ def run_ability_evolution(
     monster, evolution, guidance: str, workflow_name: str
 ) -> Optional[dict[str, Any]]:
     """One LLM call: which abilities evolve with the body. None on failure."""
-    from backend.game.monster.context_builder import build_speaker_block
+    from backend.game.monster.context_builder import ability_line, build_speaker_block
     from backend.game.utils import build_and_generate
 
     abilities_text = (
         "\n".join(
-            f"{index + 1}. {ability.name}: {ability.description}"
+            f"{index + 1}. {ability_line(ability)}"
             for index, ability in enumerate(monster.abilities or [])
         )
         or "It has no abilities yet."

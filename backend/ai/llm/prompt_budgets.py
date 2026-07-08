@@ -41,7 +41,6 @@ TEMPLATE_CLASS = {
     'camp_spotlight': 'one_liner',
     'camp_restore': 'one_liner',
     'run_goal': 'one_liner',
-    'generate_ability': 'one_liner',  # name + ONE-sentence description + type
     # --- short narration ---
     'entry_atmosphere': 'short_narration',
     'random_location': 'short_narration',
@@ -74,16 +73,13 @@ TEMPLATE_CLASS = {
     # --- structured JSON ---
     'door_choices': 'structured',
     'expedition_notices': 'structured',
-    'monster_blueprint_identity': 'structured',
-    'monster_blueprint_ecology': 'structured',
-    'monster_inner_life': 'structured',
-    'monster_social_self': 'structured',
-    'monster_creative_text': 'structured',
+    'monster_spark': 'structured',  # 2-call birth: identity words + look
+    'monster_voice': 'structured',  # 2-call birth: traits, speech, want, battle line
     'player_options': 'structured',
     'player_blueprint': 'structured',
     'player_persona': 'structured',
     'player_story': 'structured',
-    'generate_initial_abilities': 'structured',
+    'generate_ability': 'structured',  # schema v2: 9-field enum-pick JSON + one-sentence flavor
     'evolution_form': 'structured',
     'evolution_persona': 'structured',
     'evolution_abilities': 'structured',

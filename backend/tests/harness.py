@@ -24,6 +24,8 @@ _SCHEMA_MARKERS = (
     ('monsters', 'affinity'),
     ('llm_logs', 'provider'),
     ('llm_logs', 'prompt_tokens'),
+    ('abilities', 'power'),
+    ('monsters', 'temperament'),
 )
 
 

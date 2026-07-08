@@ -25,8 +25,18 @@ class Ability(BaseModel):
 
     # Ability Information
     name = Column(String(100), nullable=False)  # e.g., "Lightning Strike"
-    description = Column(Text, nullable=False)  # Detailed description of what it does
+    description = Column(Text, nullable=False)  # One-sentence flavor (display only, never parsed)
     ability_type = Column(String(50), nullable=True)  # e.g., "attack", "defense", "support"
+
+    # Schema v2 tier words (numeric-core initiative) - the LLM picks these
+    # at birth from code-owned ladders; battle/constants.py maps words to
+    # numbers. All nullable: legacy prose-only abilities predate them.
+    element = Column(String(20), nullable=True)  # from cmdts_data.ELEMENTS, NULL = none
+    power = Column(String(20), nullable=True)  # POWER_TIERS word
+    cost_pool = Column(String(10), nullable=True)  # stamina|mana
+    cost = Column(String(20), nullable=True)  # ABILITY_COST_TIERS word
+    target = Column(String(20), nullable=True)  # ABILITY_TARGETS word
+    effect = Column(String(20), nullable=True)  # ABILITY_EFFECTS keyword
 
     def to_dict(self):
         """
@@ -43,6 +53,12 @@ class Ability(BaseModel):
                 'name': self.name,
                 'description': self.description,
                 'ability_type': self.ability_type,
+                'element': self.element,
+                'power': self.power,
+                'cost_pool': self.cost_pool,
+                'cost': self.cost,
+                'target': self.target,
+                'effect': self.effect,
             }
         )
 
@@ -61,12 +77,19 @@ class Ability(BaseModel):
             Ability: New ability instance (not yet saved to database)
         """
 
-        # Extract data with safe defaults
+        # Extract data with safe defaults. v2 tier words arrive already
+        # normalized by the generator (this model only stores).
         ability = cls(
             monster_id=monster_id,
             name=llm_response_data.get('name', 'Unnamed Ability'),
             description=llm_response_data.get('description', 'A mysterious power.'),
             ability_type=llm_response_data.get('type', 'unknown'),
+            element=llm_response_data.get('element'),
+            power=llm_response_data.get('power'),
+            cost_pool=llm_response_data.get('cost_pool'),
+            cost=llm_response_data.get('cost'),
+            target=llm_response_data.get('target'),
+            effect=llm_response_data.get('effect'),
         )
 
         return ability

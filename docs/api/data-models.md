@@ -22,6 +22,7 @@ backend's `snake_case` JSON. (The frontend transforms these to camelCase in
   "personality_traits": string[],
   "rarity": "common"|"uncommon"|"rare"|"epic"|"legendary",
   "party_role": "tank"|"striker"|"skirmisher"|"support"|"controller"|"trickster",
+  "temperament": "aggressive"|"cunning"|"protective"|"craven"|"stoic"|"mischievous"|null,
   "generation_stage": "blueprint"|"persona"|"complete",
   "taxonomy": TaxonomyObject,
   "class_taxonomy": [ClassEntryObject],
@@ -38,8 +39,19 @@ backend's `snake_case` JSON. (The frontend transforms these to camelCase in
 `stats.speed` is used by the battle system to weight turn order. Stats are
 CODE-derived from `party_role` × `rarity` × `ecology.size_class` (with jitter)
 — the LLM never picks numbers. Rarity is code-rolled (weighted) and injected
-into the generation prompt. `generation_stage` tracks staged generation:
-the row exists from `blueprint` on and fills in via `monster.updated` events.
+into the generation prompt. `generation_stage` tracks the birth: the row
+exists from `blueprint` (the spark call) on and completes via a
+`monster.updated` event after the voice call; `persona` appears only on
+monsters born before the 2-call birth. `temperament` (numeric-core) is how
+it acts under pressure — the coming math battle engine's enemy policies key
+off it; NULL on pre-pivot monsters.
+
+**Birth scope (numeric-core, July 2026):** monsters are born from TWO
+LLM calls — *spark* (identity words + look) and *voice* (traits, speech
+style, want, battle line). The taxonomy/ecology/persona objects below
+therefore have a MINIMAL shape on new monsters (noted per object);
+their deeper fields exist on legacy monsters and return as
+play-earned depth (progressive-depth initiative).
 
 ## TaxonomyObject
 ```json
@@ -60,6 +72,12 @@ the row exists from `blueprint` on and fills in via `monster.updated` events.
 ```
 `domain` is a curated pick (Martial/Arcane/Primal/Divine/Cunning/Craft/Mystic);
 the rest are LLM-invented. `class_taxonomy` is a list (0:m, empty = untrained).
+New births are always untrained; classes are legacy/earned depth.
+
+New births write only `species`, `race_label`, `type_label` in
+TaxonomyObject (the lineage chain is legacy/earned depth), and only
+`size_class`, `sapience`, `communication`, `elemental_affinities` in
+EcologyObject.
 
 ## EcologyObject
 ```json
@@ -101,6 +119,8 @@ the curated lists in `backend/game/monster/cmdts_data.py`.
   "battle_line": string         // signature confrontation line
 }
 ```
+New births write only `core_wish`, `speech_style`, `battle_line` (the
+voice call); every other persona field is legacy/earned depth.
 
 ## AppearanceObject
 ```json
@@ -118,13 +138,22 @@ the curated lists in `backend/game/monster/cmdts_data.py`.
   "monster_id": number,
   "name": string,
   "description": string,
-  "ability_type": string,
+  "ability_type": "attack"|"defense"|"support"|"special"|"movement"|"utility",
+  "element": string|null,
+  "power": "feeble"|"modest"|"potent"|"mighty"|"legendary"|null,
+  "cost_pool": "stamina"|"mana"|null,
+  "cost": "none"|"minor"|"moderate"|"heavy"|null,
+  "target": "self"|"ally"|"enemy"|"all_enemies"|"all_allies"|null,
+  "effect": "damage"|"guard"|"heal"|"restore"|"haste"|"slow"|"drain"|"rally"|null,
   "created_at": string
 }
 ```
-`ability_type` is free-form LLM text (e.g. `attack`, `support`, even
-`attack; support`). The battle referee reads the ability's `description`,
-not its type, so the type has no mechanical meaning.
+Schema v2 (numeric-core): the tier words are LLM-picked at birth from
+code-owned ladders; `backend/game/battle/constants.py` maps each word to a
+number (the math battle engine consumes those). `description` is ONE
+sentence of display flavor — never parsed. The v2 fields are NULL on
+abilities generated before the pivot; prompt renderers fall back to
+prose-only lines for those.
 
 ## CardArtObject
 ```json
