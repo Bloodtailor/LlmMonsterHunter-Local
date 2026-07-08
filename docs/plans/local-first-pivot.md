@@ -1,9 +1,9 @@
 # Local-First Pivot — Direction & Master Plan
 
 **Status:** ACTIVE — survey complete; ALL direction forks are LOCKED
-(see below). Initiative 1 (text diet + eval harness) is DONE — see
-[text-diet.md](text-diet.md); initiative 2 (numeric core) is next and
-gets its own plan doc when it starts.
+(see below). Initiatives 1 ([text-diet.md](text-diet.md)) and 2
+([numeric-core.md](numeric-core.md)) are DONE; initiative 3 (math
+battle engine) is next and gets its own plan doc when it starts.
 **Repo/branch:** this doc lives in `LlmMonsterHunter-Local`, the pivot's
 home (see Deviations); each child initiative runs on its own
 `feature/<initiative>` branch (`feature/text-diet` first).
@@ -248,7 +248,7 @@ Deviations):
 |---|---|---|---|
 | 0 | Split logistics | DONE 2026-07-07 — this fork created (see Deviations); README/docs repositioned | — |
 | 1 | Text diet + eval harness | DONE 2026-07-08 ([text-diet.md](text-diet.md)) — budget policy over all 64 templates; eval scoreboard CLI; soak delta: 179 gens, 0 failures | — |
-| 2 | Numeric core | Ability schema v2, 2-call birth, temperament; New Game as migration | 1 (harness data) |
+| 2 | Numeric core | DONE 2026-07-08 ([numeric-core.md](numeric-core.md)) — ability schema v2, 2-call birth (~77% fewer birth tokens), temperament; New Game as migration | 1 (harness data) |
 | 3 | Math battle engine | Code turn order/resolution/policies; talk + end summary as the only battle LLM calls; ladders become displays | 2 |
 | 4 | Progressive depth | Persona fields earned in play; extraction/chronicle slimmed; evolution aligned to new schemas | 2, 3 |
 | 5 | Local ergonomics | Optional per-task API routing; capability presets by model size | 1–4 |
