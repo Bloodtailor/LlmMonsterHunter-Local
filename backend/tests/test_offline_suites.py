@@ -10,6 +10,7 @@ import importlib
 import pytest
 
 SUITES = [
+    'test_prompt_budgets',
     'test_resources',
     'test_monster_templates',
     'test_memory_foundation',

@@ -22,7 +22,7 @@ export function transformMonster(rawMonster) {
     backstory: rawMonster.backstory,
     personalityTraits: rawMonster.personality_traits || [],
 
-    // Identity & CMDTS (see docs/plans/monster-depth-cmdts.md)
+    // Identity & CMDTS
     rarity: rawMonster.rarity || null,
     partyRole: rawMonster.party_role || null,
     // How deeply it trusts the party (wary monsters act on their own in battle)

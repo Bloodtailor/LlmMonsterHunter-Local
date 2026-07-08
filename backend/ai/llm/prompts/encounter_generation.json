@@ -1,7 +1,7 @@
 {
   "encounter_vanity": {
     "description": "Streamed atmospheric text for arriving at a location where a monster waits",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "text",
@@ -12,7 +12,7 @@
 
   "monster_question": {
     "description": "The monster greets the arriving party in character and asks them a question of its own devising",
-    "max_tokens": 600,
+    "max_tokens": 250,
     "temperature": 0.9,
     "parser": {
       "type": "json",
@@ -20,12 +20,12 @@
       "expected_fields": ["greeting", "question"],
       "required_fields": ["greeting", "question"]
     },
-    "prompt_template": "You speak for a monster whose home an adventuring party has just walked into.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}: {location_description}\n\n--- The monster (you speak for this creature) ---\n{monster_details}\n\n--- The player's party (they just arrived) ---\n{party_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n========== YOUR TASK ==========\nWrite the monster's words to the party, strictly in its own Voice (its listed speech style - rhythm, vocabulary, tics):\n1. greeting: The monster reacts to the party's arrival with ITS OWN reason for stopping them. The reason should fit this monster and this place - maybe it guards this location, maybe it is lonely, maybe it is suspicious of intruders, maybe it wants something from them. The greeting may address specific party members it finds interesting.\n2. question: ONE question the monster asks the party, spoken in its voice. It can be ANY kind of question that fits the monster - a riddle, a test of character, a demand to know their business, a personal question, a philosophical challenge, a request for help. How the party answers will decide what the monster does with them.\n\nIf the monster's Mind cannot produce speech (feral or bestial, or it communicates without words), express its greeting and question through behavior, gestures, empathic impressions, or mimicry - narrated, not spoken.\nThe monster's Secret is private: never state it, though its behavior may faintly hint at it.\n{first_run_hint}\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"greeting\": \"The monster's spoken greeting, 2-4 sentences.\", \"question\": \"The single question the monster asks, in its own voice.\"}}\n\nJSON:"
+    "prompt_template": "You speak for a monster whose home an adventuring party has just walked into.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}: {location_description}\n\n--- The monster (you speak for this creature) ---\n{monster_details}\n\n--- The player's party (they just arrived) ---\n{party_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n========== YOUR TASK ==========\nWrite the monster's words to the party, strictly in its own Voice (its listed speech style - rhythm, vocabulary, tics):\n1. greeting: The monster reacts to the party's arrival with ITS OWN reason for stopping them. The reason should fit this monster and this place - maybe it guards this location, maybe it is lonely, maybe it is suspicious of intruders, maybe it wants something from them. The greeting may address specific party members it finds interesting.\n2. question: ONE question the monster asks the party, spoken in its voice. It can be ANY kind of question that fits the monster - a riddle, a test of character, a demand to know their business, a personal question, a philosophical challenge, a request for help. How the party answers will decide what the monster does with them.\n\nIf the monster's Mind cannot produce speech (feral or bestial, or it communicates without words), express its greeting and question through behavior, gestures, empathic impressions, or mimicry - narrated, not spoken.\nThe monster's Secret is private: never state it, though its behavior may faintly hint at it.\n{first_run_hint}\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"greeting\": \"The monster's spoken greeting, 2-3 sentences.\", \"question\": \"The single question the monster asks, in its own voice.\"}}\n\nJSON:"
   },
 
   "monster_dialogue_turn": {
     "description": "The monster responds to the party's words and decides what happens next (the outcome)",
-    "max_tokens": 700,
+    "max_tokens": 550,
     "temperature": 0.8,
     "parser": {
       "type": "json",

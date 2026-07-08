@@ -168,7 +168,7 @@ frontend/src/
   components/   feature components (battle/, dungeon/, cards/, chat/, evolution/, developer/)
   screens/      game/ (the player's screens) + developer/ (dev tools)
   shared/       ui/ (the component library — see ui.md), styles/, constants, hooks
-docs/           architecture (this file), tuning.md, api/, design/ (historical), plans/
+docs/           architecture (this file), tuning.md, api/, plans/
 setup/          interactive environment setup (checks / flows / installation)
 tools/          repo tooling (file-size checker, project stats)
 ```

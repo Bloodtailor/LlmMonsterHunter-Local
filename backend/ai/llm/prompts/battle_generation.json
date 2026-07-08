@@ -1,7 +1,7 @@
 {
   "battle_arrival": {
     "description": "Streamed hostile arrival text - the party walks into monsters that mean to fight",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "text",
@@ -12,18 +12,18 @@
 
   "battle_intro": {
     "description": "The enemy monsters' in-character challenge to the party before battle",
-    "max_tokens": 500,
+    "max_tokens": 250,
     "temperature": 0.9,
     "parser": {
       "type": "text",
       "parser_name": "none"
     },
-    "prompt_template": "You speak for hostile monsters about to battle an adventuring party.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- The hostile monsters (you speak for these) ---\n{enemy_details}\n\n--- The player's party (they are being challenged) ---\n{party_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n========== YOUR TASK ==========\nWrite the hostile monsters' battle challenge - what they say or do as they confront the party, in their own voices and personalities, 2-4 sentences total. Their words should reflect who they are and why they fight (territorial, hungry, proud, frightened...). If there are multiple monsters, they may each get a moment.\n\nResponse:"
+    "prompt_template": "You speak for hostile monsters about to battle an adventuring party.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- The hostile monsters (you speak for these) ---\n{enemy_details}\n\n--- The player's party (they are being challenged) ---\n{party_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n========== YOUR TASK ==========\nWrite the hostile monsters' battle challenge - what they say or do as they confront the party, in their own voices and personalities, 2-3 sentences total. Their words should reflect who they are and why they fight (territorial, hungry, proud, frightened...). If there are multiple monsters, they may each get a moment.\n\nResponse:"
   },
 
   "next_turn": {
     "description": "Decide which monster acts next in the battle",
-    "max_tokens": 200,
+    "max_tokens": 80,
     "temperature": 0.6,
     "parser": {
       "type": "json",
@@ -36,7 +36,7 @@
 
   "enemy_turn": {
     "description": "Choose ONE enemy monster's action on its turn",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "json",
@@ -49,7 +49,7 @@
 
   "ally_autonomous_turn": {
     "description": "A WARY party monster acts on its own terms - the LLM picks its action; the player only watches",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "json",
@@ -62,7 +62,7 @@
 
   "freeform_action_resolution": {
     "description": "THE REFEREE for player-typed custom actions: judge feasibility, narrate, judge impact",
-    "max_tokens": 500,
+    "max_tokens": 250,
     "temperature": 0.7,
     "parser": {
       "type": "json",
@@ -70,12 +70,12 @@
       "expected_fields": ["possible", "narration", "impact", "stamina_cost", "mana_cost"],
       "required_fields": ["possible", "narration", "impact"]
     },
-    "prompt_template": "You are the referee of a monster battle. The player typed a CUSTOM action for their monster; you judge whether it is possible, then narrate what happens.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- The acting monster (a member of the player's party) ---\n{actor_details}\n\n--- The player's custom action ---\nAction text: {player_action_text}\nChosen target (if any): {player_target}\nAdditional information from the player: {player_info}\n\n--- Current battle situation ---\n{battle_situation}\n\n--- Recent battle events ---\n{recent_log}\n\n--- The referee's mood for this expedition ---\n{referee_hint}\n\n========== YOUR TASK ==========\n1. FIRST judge feasibility: the action is possible only if this specific monster could plausibly do it right now, given its body, abilities, personality, and condition. Wildly overpowered, absurd, or out-of-character actions are NOT possible. Reasonable creative uses of the monster's nature ARE possible.\n2. If NOT possible: set possible to false, impact to \"none\", and write 2-3 sentences narrating the monster attempting it and failing or the moment passing - the turn is wasted.\n3. If possible: set possible to true, write 2-3 sentences narrating the action playing out, and judge the impact ON THE AFFECTED MONSTER with one of:\n   - \"none\": no direct effect on anyone's wellbeing\n   - \"light\": a typical result - THE MOST COMMON\n   - \"heavy\": strong, exploits a weakness\n   - \"devastating\": rare, must feel earned\n   - \"heal_light\" / \"heal_major\": restorative effects\n4. Set impact_target to the exact name of the single monster whose wellbeing changes (or null if none does).\n5. Judge the ACTOR's exertion: stamina_cost (physical effort) and mana_cost (magical effort), each exactly one of \"none\", \"minor\", \"moderate\", \"heavy\", \"restore_minor\", \"restore_major\". Honor any costs or restorative effects the action explicitly describes; otherwise assume sensibly (small physical feats are minor stamina, grand magical feats are moderate or heavy mana). An actor with 'spent' reserves in the needed pool should falter - prefer weak results and narrate the exhaustion.\n6. If the actor carries an Affinity line: a DEVOTED monster attempting its partner's creative plan gets the benefit of the doubt on feasibility; a WARY one may hesitate in the narration.\n7. Use numbers only as magnitude, never explicit math. The narration must match the impact and the exertion.\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"possible\": true, \"narration\": \"2-3 sentences.\", \"impact\": \"light\", \"impact_target\": \"exact monster name or null\", \"stamina_cost\": \"minor\", \"mana_cost\": \"none\"}}\n\nJSON:"
+    "prompt_template": "You are the referee of a monster battle. The player typed a CUSTOM action for their monster; you judge whether it is possible, then narrate what happens.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- The acting monster (a member of the player's party) ---\n{actor_details}\n\n--- The player's custom action ---\nAction text: {player_action_text}\nChosen target (if any): {player_target}\nAdditional information from the player: {player_info}\n\n--- Current battle situation ---\n{battle_situation}\n\n--- Recent battle events ---\n{recent_log}\n\n--- The referee's mood for this expedition ---\n{referee_hint}\n\n========== YOUR TASK ==========\n1. FIRST judge feasibility: the action is possible only if this specific monster could plausibly do it right now, given its body, abilities, personality, and condition. Wildly overpowered, absurd, or out-of-character actions are NOT possible. Reasonable creative uses of the monster's nature ARE possible.\n2. If NOT possible: set possible to false, impact to \"none\", and write 1-2 sentences narrating the monster attempting it and failing or the moment passing - the turn is wasted.\n3. If possible: set possible to true, write 1-2 sentences narrating the action playing out, and judge the impact ON THE AFFECTED MONSTER with one of:\n   - \"none\": no direct effect on anyone's wellbeing\n   - \"light\": a typical result - THE MOST COMMON\n   - \"heavy\": strong, exploits a weakness\n   - \"devastating\": rare, must feel earned\n   - \"heal_light\" / \"heal_major\": restorative effects\n4. Set impact_target to the exact name of the single monster whose wellbeing changes (or null if none does).\n5. Judge the ACTOR's exertion: stamina_cost (physical effort) and mana_cost (magical effort), each exactly one of \"none\", \"minor\", \"moderate\", \"heavy\", \"restore_minor\", \"restore_major\". Honor any costs or restorative effects the action explicitly describes; otherwise assume sensibly (small physical feats are minor stamina, grand magical feats are moderate or heavy mana). An actor with 'spent' reserves in the needed pool should falter - prefer weak results and narrate the exhaustion.\n6. If the actor carries an Affinity line: a DEVOTED monster attempting its partner's creative plan gets the benefit of the doubt on feasibility; a WARY one may hesitate in the narration.\n7. Use numbers only as magnitude, never explicit math. The narration must match the impact and the exertion.\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"possible\": true, \"narration\": \"1-2 sentences.\", \"impact\": \"light\", \"impact_target\": \"exact monster name or null\", \"stamina_cost\": \"minor\", \"mana_cost\": \"none\"}}\n\nJSON:"
   },
 
   "battle_talk": {
     "description": "Adjudicate battlefield negotiation and decide whether it changes the battle",
-    "max_tokens": 600,
+    "max_tokens": 550,
     "temperature": 0.8,
     "parser": {
       "type": "json",
@@ -88,7 +88,7 @@
 
   "action_resolution": {
     "description": "THE REFEREE: narrate one battle action, judge its impact, and judge the actor's exertion",
-    "max_tokens": 500,
+    "max_tokens": 250,
     "temperature": 0.7,
     "parser": {
       "type": "json",
@@ -96,7 +96,7 @@
       "expected_fields": ["narration", "impact", "stamina_cost", "mana_cost"],
       "required_fields": ["narration", "impact"]
     },
-    "prompt_template": "You are the referee of a monster battle. You narrate ONE action, judge its impact on the target, and judge what it costs the actor.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- The acting monster ---\n{actor_details}\n\n--- The action being taken ---\n{action_description}\n\n--- The target of the action ---\n{target_details}\n\n--- Current battle situation ---\n{battle_situation}\n\n--- Recent battle events ---\n{recent_log}\n\n--- The referee's mood for this expedition ---\n{referee_hint}\n\n========== YOUR TASK ==========\n1. Write 2-3 sentences narrating how this action plays out, true to both monsters' personalities, abilities, and SIDES (party vs hostile - check their tags above). Use numbers only to describe magnitude, never explicit math.\n2. Judge the impact ON THE TARGET with exactly one of these words:\n   - \"none\": the action misses, is shrugged off, or has no direct effect on the target's wellbeing (defending, posturing, buffs)\n   - \"light\": a typical hit or glancing blow - THE MOST COMMON RESULT\n   - \"heavy\": a strong hit that exploits a weakness or lands perfectly\n   - \"devastating\": rare - a perfect, crushing blow that should feel earned\n   - \"heal_light\": modest healing or relief for the target\n   - \"heal_major\": powerful restoration for the target\n3. Judge the ACTOR's exertion: what this action drains from its stamina (physical effort) and mana (magical effort). Use exactly one word for each, from: \"none\", \"minor\", \"moderate\", \"heavy\", \"restore_minor\", \"restore_major\".\n   - HONOR anything the action or ability description explicitly states about costs: 'costs almost nothing' means none or minor; 'passively restores mana' or 'draws power back in' means restore_minor; 'exhausting' means heavy.\n   - Otherwise assume sensibly: a basic attack is minor stamina; a modest physical ability is moderate stamina; a big spell is moderate or heavy mana; defending or resting restores a little stamina.\n   - Check the actor's Reserves above. An actor with 'spent' reserves in the pool this action needs is running on fumes: its action should falter - prefer impact \"none\" or \"light\" and narrate the exhaustion or fizzled magic.\n4. If the actor carries an Affinity line: a DEVOTED party monster gives everything for its partners - let its efforts land a shade more generously; a WARY one holds something back - it may hesitate mid-action (color the narration only, never invent a different action).\n5. The narration must MATCH the impact and the exertion you choose.\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"narration\": \"2-3 sentences describing the action.\", \"impact\": \"light\", \"stamina_cost\": \"minor\", \"mana_cost\": \"none\"}}\n\nJSON:"
+    "prompt_template": "You are the referee of a monster battle. You narrate ONE action, judge its impact on the target, and judge what it costs the actor.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- The acting monster ---\n{actor_details}\n\n--- The action being taken ---\n{action_description}\n\n--- The target of the action ---\n{target_details}\n\n--- Current battle situation ---\n{battle_situation}\n\n--- Recent battle events ---\n{recent_log}\n\n--- The referee's mood for this expedition ---\n{referee_hint}\n\n========== YOUR TASK ==========\n1. Write 1-2 sentences narrating how this action plays out, true to both monsters' personalities, abilities, and SIDES (party vs hostile - check their tags above). Use numbers only to describe magnitude, never explicit math.\n2. Judge the impact ON THE TARGET with exactly one of these words:\n   - \"none\": the action misses, is shrugged off, or has no direct effect on the target's wellbeing (defending, posturing, buffs)\n   - \"light\": a typical hit or glancing blow - THE MOST COMMON RESULT\n   - \"heavy\": a strong hit that exploits a weakness or lands perfectly\n   - \"devastating\": rare - a perfect, crushing blow that should feel earned\n   - \"heal_light\": modest healing or relief for the target\n   - \"heal_major\": powerful restoration for the target\n3. Judge the ACTOR's exertion: what this action drains from its stamina (physical effort) and mana (magical effort). Use exactly one word for each, from: \"none\", \"minor\", \"moderate\", \"heavy\", \"restore_minor\", \"restore_major\".\n   - HONOR anything the action or ability description explicitly states about costs: 'costs almost nothing' means none or minor; 'passively restores mana' or 'draws power back in' means restore_minor; 'exhausting' means heavy.\n   - Otherwise assume sensibly: a basic attack is minor stamina; a modest physical ability is moderate stamina; a big spell is moderate or heavy mana; defending or resting restores a little stamina.\n   - Check the actor's Reserves above. An actor with 'spent' reserves in the pool this action needs is running on fumes: its action should falter - prefer impact \"none\" or \"light\" and narrate the exhaustion or fizzled magic.\n4. If the actor carries an Affinity line: a DEVOTED party monster gives everything for its partners - let its efforts land a shade more generously; a WARY one holds something back - it may hesitate mid-action (color the narration only, never invent a different action).\n5. The narration must MATCH the impact and the exertion you choose.\n\n========== RESPONSE FORMAT ==========\nRespond with ONLY valid JSON in exactly this format:\n{{\"narration\": \"1-2 sentences describing the action.\", \"impact\": \"light\", \"stamina_cost\": \"minor\", \"mana_cost\": \"none\"}}\n\nJSON:"
   },
 
   "turn_vanity": {
@@ -112,34 +112,34 @@
 
   "battle_summary": {
     "description": "Summarize a finished battle for the dungeon adventure log, including lasting effects",
-    "max_tokens": 500,
+    "max_tokens": 450,
     "temperature": 0.6,
     "parser": {
       "type": "text",
       "parser_name": "none"
     },
-    "prompt_template": "You are the chronicler of a dungeon adventure, writing the record of a battle that just ended.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- How the battle ended ---\nOutcome: {outcome} for the player's party\nHow it ended: {resolution} (combat = fought to the end; joined = enemies joined the party; yielded = enemies gave up; fled = enemies escaped; spared = the party was shown mercy)\nMonsters who joined the party: {joined_names}\n\n--- The player's party (final conditions) ---\n{party_details}\n\n--- The hostile monsters (final conditions) ---\n{enemy_details}\n\n--- The full battle log, turn by turn ---\n{recent_log}\n\n========== YOUR TASK ==========\nWrite a 3-5 sentence summary of this battle for the adventure log. Include:\n1. Who fought and how the fight actually went (use the battle log - key blows, turning points, notable words spoken).\n2. How it ended and what became of each hostile monster (fell, fled, yielded, joined).\n3. Any LASTING effects that should be remembered going forward: injuries and conditions the party carries out, lingering ability effects or debuffs mentioned in the log (e.g. jammed gears, poison, curses), promises or threats made.\nWrite in plain past tense, factual but vivid. No headings, no lists - one flowing paragraph.\n\nResponse:"
+    "prompt_template": "You are the chronicler of a dungeon adventure, writing the record of a battle that just ended.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- How the battle ended ---\nOutcome: {outcome} for the player's party\nHow it ended: {resolution} (combat = fought to the end; joined = enemies joined the party; yielded = enemies gave up; fled = enemies escaped; spared = the party was shown mercy)\nMonsters who joined the party: {joined_names}\n\n--- The player's party (final conditions) ---\n{party_details}\n\n--- The hostile monsters (final conditions) ---\n{enemy_details}\n\n--- The full battle log, turn by turn ---\n{recent_log}\n\n========== YOUR TASK ==========\nWrite a 3-4 sentence summary of this battle for the adventure log. Include:\n1. Who fought and how the fight actually went (use the battle log - key blows, turning points, notable words spoken).\n2. How it ended and what became of each hostile monster (fell, fled, yielded, joined).\n3. Any LASTING effects that should be remembered going forward: injuries and conditions the party carries out, lingering ability effects or debuffs mentioned in the log (e.g. jammed gears, poison, curses), promises or threats made.\nWrite in plain past tense, factual but vivid. No headings, no lists - one flowing paragraph.\n\nResponse:"
   },
 
   "battle_victory": {
     "description": "Celebratory narration after the party defeats all enemies",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "text",
       "parser_name": "none"
     },
-    "prompt_template": "You are the narrator of a fantasy dungeon adventure. The player's party has just WON a battle.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- How it ended ---\n{resolution} ('combat' = the enemies fell in battle; 'joined' = they agreed to join the party; 'yielded' = they gave up and let the party pass; 'fled' = they escaped)\n\n--- The victorious party ---\n{party_details}\n\n--- The other monsters ---\n{enemy_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n--- The final moments of the battle ---\n{recent_log}\n\n========== YOUR TASK ==========\nWrite 2-4 sentences describing this ending and its aftermath, true to how it ended. If monsters joined, celebrate the new companions. Reflect the party members' personalities.\n\nResponse:"
+    "prompt_template": "You are the narrator of a fantasy dungeon adventure. The player's party has just WON a battle.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- How it ended ---\n{resolution} ('combat' = the enemies fell in battle; 'joined' = they agreed to join the party; 'yielded' = they gave up and let the party pass; 'fled' = they escaped)\n\n--- The victorious party ---\n{party_details}\n\n--- The other monsters ---\n{enemy_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n--- The final moments of the battle ---\n{recent_log}\n\n========== YOUR TASK ==========\nWrite 2-3 sentences describing this ending and its aftermath, true to how it ended. If monsters joined, celebrate the new companions. Reflect the party members' personalities.\n\nResponse:"
   },
 
   "battle_defeat": {
     "description": "Somber narration after all party monsters are defeated",
-    "max_tokens": 400,
+    "max_tokens": 220,
     "temperature": 0.8,
     "parser": {
       "type": "text",
       "parser_name": "none"
     },
-    "prompt_template": "You are the narrator of a fantasy dungeon adventure. The player's party has just LOST a battle.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- How it ended ---\n{resolution} ('combat' = the party was overwhelmed and retreats from the dungeon with their fallen companions; 'spared' = the hostile monsters accepted the party's plea and let them leave alive)\n\n--- The defeated party ---\n{party_details}\n\n--- The victorious monsters ---\n{enemy_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n--- The final moments of the battle ---\n{recent_log}\n\n========== YOUR TASK ==========\nWrite 2-4 sentences of somber text describing this ending. It is a setback, not the end; the party escapes with their lives - humbled, but alive.\n\nResponse:"
+    "prompt_template": "You are the narrator of a fantasy dungeon adventure. The player's party has just LOST a battle.\n\n========== CONTEXT ==========\n\n--- Location ---\n{location_name}\n\n--- How it ended ---\n{resolution} ('combat' = the party was overwhelmed and retreats from the dungeon with their fallen companions; 'spared' = the hostile monsters accepted the party's plea and let them leave alive)\n\n--- The defeated party ---\n{party_details}\n\n--- The victorious monsters ---\n{enemy_details}\n\n--- The party's adventure so far ---\n{dungeon_log}\n\n--- The final moments of the battle ---\n{recent_log}\n\n========== YOUR TASK ==========\nWrite 2-3 sentences of somber text describing this ending. It is a setback, not the end; the party escapes with their lives - humbled, but alive.\n\nResponse:"
   }
 }
