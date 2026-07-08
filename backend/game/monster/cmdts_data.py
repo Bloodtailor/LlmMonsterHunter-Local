@@ -85,6 +85,11 @@ RARITIES = ['common', 'uncommon', 'rare', 'epic', 'legendary']
 
 PARTY_ROLES = ['tank', 'striker', 'skirmisher', 'support', 'controller', 'trickster']
 
+# How a monster acts under pressure. Picked at spark (2-call birth);
+# initiative 3's enemy-action policies key off this word - until then it
+# rides into prompts as flavor.
+TEMPERAMENTS = ['aggressive', 'cunning', 'protective', 'craven', 'stoic', 'mischievous']
+
 SIZE_CLASSES = ['tiny', 'small', 'medium', 'large', 'huge', 'colossal']
 
 # Sapience gates the chat system: feral monsters cannot converse (impressions

@@ -27,6 +27,8 @@ export function transformMonster(rawMonster) {
     partyRole: rawMonster.party_role || null,
     // How deeply it trusts the party (wary monsters act on their own in battle)
     affinity: rawMonster.affinity || 'wary',
+    // How it acts under pressure (null on pre-pivot monsters)
+    temperament: rawMonster.temperament || null,
     generationStage: rawMonster.generation_stage || 'complete',
     taxonomy: rawMonster.taxonomy || {},
     classTaxonomy: rawMonster.class_taxonomy || [],

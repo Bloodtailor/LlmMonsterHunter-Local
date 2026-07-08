@@ -73,11 +73,8 @@ TEMPLATE_CLASS = {
     # --- structured JSON ---
     'door_choices': 'structured',
     'expedition_notices': 'structured',
-    'monster_blueprint_identity': 'structured',
-    'monster_blueprint_ecology': 'structured',
-    'monster_inner_life': 'structured',
-    'monster_social_self': 'structured',
-    'monster_creative_text': 'structured',
+    'monster_spark': 'structured',  # 2-call birth: identity words + look
+    'monster_voice': 'structured',  # 2-call birth: traits, speech, want, battle line
     'player_options': 'structured',
     'player_blueprint': 'structured',
     'player_persona': 'structured',

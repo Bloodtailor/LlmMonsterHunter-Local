@@ -94,6 +94,9 @@ def build_monster_block(
         identity_line += f" ({race_label})"
     if monster.party_role:
         identity_line += f", role: {monster.party_role}"
+    temperament = getattr(monster, 'temperament', None)
+    if temperament:
+        identity_line += f", temperament: {temperament}"
 
     lines = [
         f"- {monster.name} ({monster.species}){side_tag}{condition_tag}{defending_tag}",

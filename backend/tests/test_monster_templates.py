@@ -49,33 +49,16 @@ def test_all_templates_parse():
 
 # The exact variable sets generator.py passes to build_and_generate
 GENERATOR_VARIABLES = {
-    'monster_blueprint_identity': {
+    'monster_spark': {
         'location_context',
         'rarity',
-        'taxonomy_options',
         'role_options',
         'size_options',
-        'lifecycle_options',
-        'creation_options',
-    },
-    'monster_blueprint_ecology': {
-        'location_context',
-        'identity_facts',
-        'habitat_options',
-        'biome_options',
-        'social_options',
-        'sustenance_options',
-        'feeding_options',
+        'temperament_options',
         'sapience_options',
-        'communication_options',
         'element_options',
-        'activity_options',
-        'class_domain_options_line',
-        'class_domain_options',
     },
-    'monster_inner_life': {'monster_facts'},
-    'monster_social_self': {'monster_facts', 'inner_life_facts'},
-    'monster_creative_text': {'location_context', 'monster_facts', 'persona_facts'},
+    'monster_voice': {'spark_facts'},
     'generate_ability': {
         'monster_name',
         'monster_species',
