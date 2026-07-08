@@ -22,7 +22,7 @@ when he wants detail.
 
 ```bash
 # Backend (from repo root; venv lives at ./venv)
-./venv/Scripts/python.exe backend/run.py            # start on :5000
+./venv/Scripts/python.exe -m backend.run            # start on :5000
 PYTHONIOENCODING=utf-8 ./venv/Scripts/python.exe -m backend.tests.test_evolution   # one suite
 ./venv/Scripts/python.exe -m pytest                 # all offline suites
 ./venv/Scripts/python.exe -m ruff check backend setup tools   # lint

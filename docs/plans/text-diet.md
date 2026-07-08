@@ -1,7 +1,8 @@
 # Text Diet + Eval Harness — Plan
 
-**Status:** IN PROGRESS (July 2026) — Diet-M0..M3 landed; M4 awaits
-Aaron's live soak (the delta report lands here when it's done).
+**Status:** IMPLEMENTED (2026-07-08) — Diet-M0..M4 complete; the M4 soak
+was scripted by Claude via the HTTP API (see Deviations) and the delta
+report is below.
 **Branch:** `feature/text-diet` — one milestone commit per milestone, prefix `Diet-M#`.
 **Parent:** [local-first-pivot.md](local-first-pivot.md) — this is child initiative 1.
 
@@ -138,7 +139,36 @@ dev DB), local 7B at ~15–30 tok/s. Regenerate any time with
 - [x] `ruff check backend setup tools` clean; file-size ceiling respected
 - [x] `python -m backend.tests.eval report` returns the scoreboard (615 generations, 52 templates)
 - [x] replay verified live (backend stopped): `turn_vanity` at logged params, `goal_check` at the NEW 60-token cap (`--params current`) — 11-token answer, parsed, `eval:` rows in the dev AI log
-- [ ] Soak battle: dev AI log shows new caps on every row; abilities generate one-sentence descriptions
+- [x] Soak battle: dev AI log shows new caps on every row (`cap_now` column of the soak report matches the diet); abilities generate one-sentence descriptions (e.g. "Weaves a brittle salt-lattice around foes, redirecting their attacks to crystallize into delayed sorrow damage.")
+
+## Soak delta (M4, July 8 2026)
+
+Scripted play session over the HTTP API against the live backend:
+two dungeon runs plus the tail of the guided first run — 3 battles
+(one won by talk alone, one by combat, one 2v2 by combat-then-talk),
+2 monster births, a camp, treasure events, sneaks, a home-base chat,
+2 exit ceremonies with chronicles. Then
+`eval report --since <soak start>`:
+
+- **179 generations, 37 templates, ZERO failed / retry / parse-fail
+  rows.** The baseline's headline problem, `generate_ability` (24%
+  retry, avg 133 tok), came back **0% retry, avg 39.4 tok** over 12
+  runs — one-sentence descriptions as demanded.
+- Big shrinks vs baseline: `camp_scene` 672→250 avg tok (29→7.9 s),
+  `next_turn` 17→8 avg tok, `battle_intro` well under its cap with no
+  truncation, `path_choices` 307 avg under its 500 cap.
+- Previously-unlogged templates now measured: `treasure_item`,
+  `treasure_discovery`, `camp_spotlight` (via camp), `sneak_attempt`
+  rows all clean.
+- **One watch item:** `camp_scene` hit its 250 cap (100% truncation,
+  n=1). Not acting on one row — if future soaks repeat it, tighten the
+  camp wording further rather than raising the cap.
+
+Caveat, logged honestly: the soak ran on Aaron's current `.env` model
+(Qwen3.5-9B-DeepSeek-V4-Flash Q4_K_M @ 8192 ctx), not the kunoichi-7b
+the baseline corpus was captured on. Token counts mostly measure the
+caps + wording (the diet), but the perfect parse rates are partly the
+model's credit; re-baseline on the 7B floor when initiative 2 needs it.
 
 ## Deviations log
 
@@ -159,3 +189,9 @@ dev DB), local 7B at ~15–30 tok/s. Regenerate any time with
   the HTTP API against the live backend + local model, then runs the
   `report --since` delta. Same evidence, different pilot; Aaron may
   still play a run later for feel and it folds into the report.
+- **2026-07-08 — soak executed on a different model than the baseline.**
+  Aaron's `.env` had moved to Qwen3.5-9B @ 8192 ctx; the delta is
+  therefore model-confounded (see the Soak delta caveat). Also noted:
+  the soak's second dungeon run was left ACTIVE in the save (party
+  standing in The Salt-Glass Ossuary, spoils intact) rather than
+  abandoned — abandoning would have forfeited the run's items/CoCaToks.
